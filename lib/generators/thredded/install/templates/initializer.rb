@@ -47,6 +47,12 @@ Thredded.show_topic_followers = false
 # This model can be customized further by overriding a handful of methods on the User model.
 # For more information, see app/models/thredded/user_extender.rb.
 
+# ==> Text search configuration
+
+#https://www.postgresql.org/docs/8.4/static/textsearch.html
+Thredded.text_search_config = 'english'
+
+
 # ==> Ordering configuration
 
 # How to calculate the position of messageboards in a list:

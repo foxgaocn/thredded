@@ -26,14 +26,14 @@ module Thredded
     def search_topics
       scope = @scope
       scope = @scope.where(user_id: users) if users.present?
-      scope = DbTextSearch::FullText.new(scope, :title).search(text) if text.present?
+      scope = DbTextSearch::FullText.new(scope, :title).search(text, pg_ts_config: "'#{Thredded.text_search_config}'") if text.present?
       scope
     end
 
     def search_posts
       posts_scope = Thredded::Post
       posts_scope = posts_scope.where(user_id: users) if users.present?
-      posts_scope = DbTextSearch::FullText.new(posts_scope, :content).search(text) if text.present?
+      posts_scope = DbTextSearch::FullText.new(posts_scope, :content).search(text, pg_ts_config: "'#{Thredded.text_search_config}'") if text.present?
       @scope.joins(:posts).merge(posts_scope)
     end
 

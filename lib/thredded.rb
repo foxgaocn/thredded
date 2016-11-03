@@ -38,7 +38,8 @@ module Thredded
     :user_class,
     :user_display_name_method,
     :user_name_column,
-    :user_path
+    :user_path,
+    :text_search_config
 
   # @return [Symbol] The name of the method used by Thredded controllers and views to fetch the currently signed-in user
   mattr_accessor :current_user_method
@@ -69,6 +70,7 @@ module Thredded
   self.show_topic_followers = false
   self.messageboards_order = :position
   self.autocomplete_min_length = 2
+  self.text_search_config = 'english'
 
   def self.user_display_name_method
     @@user_display_name_method || user_name_column
