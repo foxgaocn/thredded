@@ -1,18 +1,21 @@
 .thredded--topic-header {
-  margin-bottom: $thredded-large-spacing;
-  margin-top: $thredded-base-spacing;
-  @include thredded-media-mobile {
-    margin-bottom: $thredded-small-spacing;
-    margin-top: 0;
+  margin-bottom: $thredded-small-spacing;
+  margin-top: 0;
+  @include thredded-media-desktop-and-up {
+    margin-bottom: $thredded-large-spacing;
+    margin-top: $thredded-small-spacing;
+    @include thredded--clearfix;
   }
-  @include thredded--clearfix;
 }
 
 .thredded--topic-header--title {
   @extend %thredded--heading;
-  font-size: 1.5rem; // 24px
+  font-size: 1.25rem;
   line-height: 1.2;
   margin-bottom: $thredded-small-spacing / 2;
+  @include thredded-media-tablet-and-up {
+    font-size: 1.5rem;
+  }
 }
 
 .thredded--topic-header--started-by {
@@ -31,18 +34,37 @@
 }
 
 .thredded--topic-header--follow-info {
-  float: right;
   color: $thredded-secondary-text-color;
   font-size: $thredded-font-size-small;
   font-style: normal;
-  max-width: 60%;
-  text-align: right;
+  @include thredded-media-desktop-and-up {
+    float: right;
+    text-align: right;
+    max-width: 25rem;
+    position: relative;
+    form {
+      // Do not introduce extra margin
+      position: absolute;
+      right: 0;
+      vertical-align: text-top;
+      &.thredded--topic-header--follow-info--unfollow {
+        top: 1.625em;  // required for Safari and Firefox
+      }
+    }
+    &--reason {
+      display: block;
+      vertical-align: text-top;
+    }
+  }
   p {
     margin: 0;
   }
+  &--reason {
+    display: inline-block;
+  }
   form {
     display: inline-block;
-    input[type=submit] {
+    input[type=submit], button {
       background:none;
       border:none;
       padding:0;
@@ -53,13 +75,10 @@
   }
 }
 
-.thredded--topic-following {
-  .thredded--topic-header--follow-info {
-    position: relative;
-  }
-  .thredded--topic-header--follow-icon {
-    @extend %thredded--following-icon;
-  }
+
+.thredded--topic-header--follow-icon {
+  @extend %thredded--following-icon;
+  vertical-align: middle;
 }
 
 .thredded--topic-followers {

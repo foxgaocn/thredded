@@ -20,14 +20,10 @@ Thredded works with SQLite, MySQL (v5.6.4+), and PostgreSQL. See the demo at htt
   s.required_ruby_version = '~> 2.1'
 
   # backend
-  s.add_dependency 'bbcoder', '~> 1.0'
   s.add_dependency 'pundit', '>= 1.1.0'
   s.add_dependency 'active_record_union', '>= 1.2.0'
   s.add_dependency 'db_text_search', '~> 0.2.0'
   s.add_dependency 'friendly_id'
-  s.add_dependency 'html-pipeline'
-  s.add_dependency 'html-pipeline-vimeo'
-  s.add_dependency 'html-pipeline-youtube'
   s.add_dependency 'htmlentities'
   s.add_dependency 'kaminari'
   s.add_dependency 'nokogiri'
@@ -35,9 +31,15 @@ Thredded works with SQLite, MySQL (v5.6.4+), and PostgreSQL. See the demo at htt
   s.add_dependency 'rb-gravatar'
   s.add_dependency 'inline_svg'
 
+  # post rendering
+  s.add_dependency 'kramdown'
+  s.add_dependency 'html-pipeline'
+  s.add_dependency 'html-pipeline-vimeo'
+  s.add_dependency 'html-pipeline-youtube'
   # html-pipeline dependencies, see https://github.com/jch/html-pipeline#dependencies
+  # for the AutolinkFilter
+  s.add_dependency 'rinku'
   s.add_dependency 'gemoji'
-  s.add_dependency 'github-markdown'
   s.add_dependency 'sanitize'
 
   # frontend
@@ -56,8 +58,8 @@ Thredded works with SQLite, MySQL (v5.6.4+), and PostgreSQL. See the demo at htt
   s.add_development_dependency 'faker', '>= 1.6.2'
   s.add_development_dependency 'launchy'
   s.add_development_dependency 'rspec-rails', '>= 3.5.0'
+  s.add_development_dependency 'simplecov'
   s.add_development_dependency 'rubocop', '= 0.42.0'
-  s.add_development_dependency 'test-unit'
 
   # dummy app dependencies
   s.add_development_dependency 'rails-i18n'

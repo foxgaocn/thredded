@@ -1,10 +1,10 @@
-# Thredded [![Code Climate](https://codeclimate.com/github/thredded/thredded/badges/gpa.svg)](https://codeclimate.com/github/thredded/thredded) [![Travis-CI](https://api.travis-ci.org/thredded/thredded.svg?branch=master)](https://travis-ci.org/thredded/thredded/) [![Test Coverage](https://codeclimate.com/github/thredded/thredded/badges/coverage.svg)](https://codeclimate.com/github/thredded/thredded/coverage) [![Gitter](https://badges.gitter.im/thredded/thredded.svg)](https://gitter.im/thredded/thredded?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge) [![Stories in Ready](https://badge.waffle.io/thredded/thredded.svg?label=ready&title=waffle.io)](http://waffle.io/thredded/thredded)
+# Thredded [![Code Climate](https://codeclimate.com/github/thredded/thredded/badges/gpa.svg)](https://codeclimate.com/github/thredded/thredded) [![Travis-CI](https://api.travis-ci.org/thredded/thredded.svg?branch=master)](https://travis-ci.org/thredded/thredded/) [![Test Coverage](https://codeclimate.com/github/thredded/thredded/badges/coverage.svg)](https://codeclimate.com/github/thredded/thredded/coverage) [![Inline docs](http://inch-ci.org/github/thredded/thredded.svg?branch=master)](http://inch-ci.org/github/thredded/thredded) [![Gitter](https://badges.gitter.im/thredded/thredded.svg)](https://gitter.im/thredded/thredded?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
 _Thredded_ is a Rails 4.2+ forum/messageboard engine. Its goal is to be as simple and feature rich as possible.
 
 Some of the features currently in Thredded:
 
-* Markdown post formatting with some BBCode support (by default).
+* Markdown (default) or BBCode post formatting.
 * (Un)read posts tracking.
 * Email notifications, topic subscriptions, @-mentions, per-messageboard notification settings.
 * Private group messaging.
@@ -192,17 +192,31 @@ mkdir -p app/views/thredded/posts && cp "$(bundle show thredded)/$_/_post.html.e
 customizations are still compatible with the new version of thredded. This is difficult and error-prone.
 Whenever possible, use the styles and i18n to customize Thredded to your needs.
 
-#### Empty view partials included for customization
+#### View hooks
 
-There are 2 empty view partials included in the gem that exist for the purpose of being overridden
-in the parent app *if desired*. They are:
+Thredded provides view hooks to customize the UI before/after/replacing individual components.
 
-* `app/views/thredded/posts_common/form/_before_content.html.erb`
-* `app/views/thredded/posts_common/form/_after_content.html.erb`
+View hooks allow you to render anything in the thredded view context.
+For example, to render a partial after the post content textarea, add the snippet below to 
+the `config/initializers/thredded.rb` initializer:
 
-And are rendered directly before, and directly after the textarea where users type their post
-contents. These exist in the case where a messageboard would like to add things like, wysiwyg/wymean
-editors, buttons, help links, help copy, further customization for the textarea, etc.
+```ruby
+Rails.application.config.to_prepare do
+  Thredded.view_hooks.post_form.content_text_area.config.before do |form:, **args|
+    # This is render in the Thredded view context, so all Thredded helpers and URLs are accessible here directly.
+    render 'my/partial', form: form
+  end
+end
+```
+
+You can use the post content textarea hook to add things like wysiwyg/wymean editors, buttons, help links, help copy,
+further customization for the textarea, etc.
+
+To see the complete list of view hooks and their arguments, run:
+
+```bash
+grep view_hooks -R --include '*.html.erb' "$(bundle show thredded)"
+```
 
 ## Theming
 
@@ -454,10 +468,17 @@ rake dev:server
 To run the tests, just run `rspec`. The test suite will re-create the test database on every run, so there is no need to
 run tasks that maintain the test database.
 
-Run `rubocop` to ensure a consistent code style across the codebase.
-
-By default, SQLite is used in development and test. On Travis, the tests will run using SQLite, PostgreSQL, SQLite,
+By default, SQLite is used in development and test. On Travis, the tests will run using SQLite, PostgreSQL, MySQL,
 and all the supported Rails versions.
+
+### Ruby
+
+Thredded Ruby code formatting is ensured by [Rubocop](https://github.com/bbatsov/rubocop). Run `rubocop -a` to ensure a
+consistent code style across the codebase.
+
+Thredded is documented with [YARD](http://yardoc.org/) and you can use the
+[inch gem](https://github.com/rrrene/inch) or the [Inch CI](http://inch-ci.org/github/thredded/thredded) to find code
+that lacks documentation.
 
 ### JavaScript
 
@@ -472,7 +493,10 @@ All Thredded JavaScript is compatible with the following Turbolinks options:
 * Turbolinks Classic.
 * Turbolinks Classic + jquery-turbolinks.
 
-To achieve this, all the Thredded code must register onload via
+Thredded JavaScript is also compatible with being loaded from script elements with
+`[async]` and/or `[defer]` attributes.
+
+To achieve the above, all the Thredded code must register onload via
 `Thredded.onPageLoad`, e.g.:
 
 ```js
@@ -481,6 +505,8 @@ window.Thredded.onPageLoad(() => {
   $('[data-thredded-select2]').select2();
 });
 ```
+
+Additionally, all the thredded views must be wrapped in a `<%= thredded_page do %>` block.
 
 On Turbolinks 5 onPageLoad will run on the same DOM when the page is restored
 from history (because Turbolinks 5 caches a *clone* of the body node, so

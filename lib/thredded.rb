@@ -5,14 +5,20 @@ require 'active_record_union'
 require 'db_text_search'
 require 'friendly_id'
 require 'html/pipeline'
-require 'html/pipeline/at_mention_filter'
-require 'html/pipeline/bbcode_filter'
+require 'html/pipeline/sanitization_filter'
 require 'html/pipeline/vimeo/vimeo_filter'
 require 'html/pipeline/youtube/youtube_filter'
+require 'rinku'
 require 'kaminari'
 require 'rb-gravatar'
 require 'active_job'
 require 'inline_svg'
+
+# Require these explictly to make sure they are not reloaded.
+# This allows for configuring them by accessing class methods in the initializer.
+require 'thredded/html_pipeline/at_mention_filter'
+require 'thredded/html_pipeline/autolink_filter'
+require 'thredded/html_pipeline/kramdown_filter'
 
 # Asset compilation
 require 'autoprefixer-rails'
@@ -71,6 +77,15 @@ module Thredded
   self.messageboards_order = :position
   self.autocomplete_min_length = 2
   self.text_search_config = 'english'
+
+  # @return [Thredded::AllViewHooks] View hooks configuration.
+  def self.view_hooks
+    instance = Thredded::AllViewHooks.instance
+    unless instance
+      fail '`Thredded.view_hooks` must be configured in a `Rails.application.config.to_prepare` block!'
+    end
+    instance
+  end
 
   def self.user_display_name_method
     @@user_display_name_method || user_name_column

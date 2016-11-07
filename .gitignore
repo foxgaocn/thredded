@@ -17,3 +17,6 @@ tags
 zeus.json
 custom_plan.rb
 tmp/
+/coverage/
+/doc/
+/.yardoc/

@@ -82,8 +82,9 @@ Thredded.layout = 'thredded/application'
 # Customize the way Thredded handles post formatting.
 
 # Change the default html-pipeline filters used by thredded.
-# E.g. to remove BBCode support:
-# Thredded::ContentFormatter.pipeline_filters -= [HTML::Pipeline::BbcodeFilter]
+# E.g. to replace default emoji filter with your own:
+# Thredded::ContentFormatter.markup_filters[
+#   Thredded::ContentFormatter.markup_filters.index(HTML::Pipeline::EmojiFilter)] = MyEmojiFilter
 
 # Change the HTML sanitization settings used by Thredded.
 # See the Sanitize docs for more information on the underlying library: https://github.com/rgrove/sanitize/#readme
@@ -103,5 +104,19 @@ Thredded.layout = 'thredded/application'
 #       @message = exception.message
 #       render template: 'sessions/new', status: :forbidden
 #     end
+#   end
+# end
+
+# ==> View hooks
+#
+# Customize the UI before/after/replacing individual components.
+# See the full list of view hooks and their arguments by running:
+#
+#     $ grep view_hooks -R --include '*.html.erb' "$(bundle show thredded)"
+#
+# Rails.application.config.to_prepare do
+#   Thredded.view_hooks.post_form.content_text_area.config.before do |form:, **args|
+#     # This is called in the Thredded view context, so all Thredded helpers and URLs are accessible here directly.
+#     'hi'
 #   end
 # end

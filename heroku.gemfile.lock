@@ -1,15 +1,13 @@
 PATH
   remote: .
   specs:
-    thredded (0.7.0)
+    thredded (0.8.0)
       active_record_union (>= 1.2.0)
       autoprefixer-rails
       autosize-rails
-      bbcoder (~> 1.0)
       db_text_search (~> 0.2.0)
       friendly_id
       gemoji
-      github-markdown
       html-pipeline
       html-pipeline-vimeo
       html-pipeline-youtube
@@ -17,11 +15,13 @@ PATH
       inline_svg
       jquery-rails
       kaminari
+      kramdown
       nokogiri
       pundit (>= 1.1.0)
       rails (>= 4.2.0)
       rails-timeago
       rb-gravatar
+      rinku
       sanitize
       sass (>= 3.4.21)
       select2-rails (~> 3.5)
@@ -69,9 +69,10 @@ GEM
       i18n (~> 0.7)
       minitest (~> 5.1)
       tzinfo (~> 1.1)
-    addressable (2.4.0)
+    addressable (2.5.0)
+      public_suffix (~> 2.0, >= 2.0.2)
     arel (7.1.4)
-    autoprefixer-rails (6.5.1.1)
+    autoprefixer-rails (6.5.2)
       execjs
     autosize-rails (1.18.17)
       rails (>= 3.1)
@@ -79,7 +80,6 @@ GEM
     babel-transpiler (0.7.0)
       babel-source (>= 4.0, < 6)
       execjs (~> 2.0)
-    bbcoder (1.1.1)
     builder (3.2.2)
     coffee-rails (4.2.1)
       coffee-script (>= 2.2.0)
@@ -105,7 +105,6 @@ GEM
     friendly_id (5.1.0)
       activerecord (>= 4.0.0)
     gemoji (2.1.0)
-    github-markdown (0.6.9)
     globalid (0.3.7)
       activesupport (>= 4.1.0)
     html-pipeline (2.4.2)
@@ -129,6 +128,7 @@ GEM
     kaminari (0.17.0)
       actionpack (>= 3.0.0)
       activesupport (>= 3.0.0)
+    kramdown (1.12.0)
     libv8 (3.16.14.15)
     loofah (2.0.3)
       nokogiri (>= 1.5.9)
@@ -148,6 +148,7 @@ GEM
     nokogumbo (1.4.10)
       nokogiri
     pg (0.19.0)
+    public_suffix (2.0.3)
     puma (3.6.0)
     pundit (1.1.0)
       activesupport (>= 3.0.0)
@@ -195,6 +196,7 @@ GEM
     rb-gravatar (1.0.5)
     ref (2.0.0)
     request_store (1.3.1)
+    rinku (2.0.2)
     rollbar (2.13.3)
       multi_json
     sanitize (4.4.0)
@@ -232,6 +234,8 @@ GEM
     turbolinks-source (5.0.0)
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
+    uglifier (3.0.3)
+      execjs (>= 0.3.0, < 3)
     websocket-driver (0.6.4)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.2)
@@ -256,6 +260,7 @@ DEPENDENCIES
   therubyracer
   thredded!
   turbolinks
+  uglifier
 
 RUBY VERSION
    ruby 2.3.1p112
